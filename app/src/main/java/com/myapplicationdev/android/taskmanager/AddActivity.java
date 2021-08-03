@@ -48,7 +48,7 @@ public class AddActivity extends AppCompatActivity {
                 db.close();
 
                 Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, 2);
+                cal.add(Calendar.SECOND, 5);
 
                 Intent intent = new Intent(AddActivity.this, MyReceiver.class);
 
