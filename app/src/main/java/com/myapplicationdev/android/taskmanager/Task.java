@@ -13,6 +13,11 @@ public class Task implements Serializable {
         this.description = description;
     }
 
+    public Task(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }

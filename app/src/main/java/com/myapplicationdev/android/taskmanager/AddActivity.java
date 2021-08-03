@@ -20,7 +20,7 @@ public class AddActivity extends AppCompatActivity {
 
     int reqCode = 12345;
 
-    EditText etName, etDesc;
+    EditText etName, etDesc, etRemind;
     Button btnAdd, btnCancel;
 
     @Override
@@ -30,6 +30,7 @@ public class AddActivity extends AppCompatActivity {
 
         etName = findViewById(R.id.etName);
         etDesc = findViewById(R.id.etDes);
+        etRemind = findViewById(R.id.etRemind);
         btnAdd = findViewById(R.id.btnAddTask);
         btnCancel = findViewById(R.id.btnCancel);
 
@@ -38,6 +39,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String name = etName.getText().toString();
                 String desc = etDesc.getText().toString();
+                int remind = Integer.parseInt(etRemind.getText().toString());
 
                 DBHelper db = new DBHelper(AddActivity.this);
                 db.insertTask(name, desc);
@@ -48,9 +50,13 @@ public class AddActivity extends AppCompatActivity {
                 db.close();
 
                 Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, 5);
+                cal.add(Calendar.SECOND, remind);
 
                 Intent intent = new Intent(AddActivity.this, MyReceiver.class);
+                Task task = new Task(name, desc);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("task", task);
+                intent.putExtra("bundle", bundle);
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AddActivity.this, reqCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
