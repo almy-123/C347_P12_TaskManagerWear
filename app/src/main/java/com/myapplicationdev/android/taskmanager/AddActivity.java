@@ -47,6 +47,7 @@ public class AddActivity extends AppCompatActivity {
                 Log.i("info", "Task: " + name + " Desc: " + desc);
                 etName.setText("");
                 etDesc.setText("");
+                etRemind.setText("");
                 db.close();
 
                 Calendar cal = Calendar.getInstance();
