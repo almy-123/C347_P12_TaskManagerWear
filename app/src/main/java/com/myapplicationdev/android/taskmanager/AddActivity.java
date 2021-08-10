@@ -63,6 +63,7 @@ public class AddActivity extends AppCompatActivity {
 
                 AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
                 am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                finish();
             }
         });
 

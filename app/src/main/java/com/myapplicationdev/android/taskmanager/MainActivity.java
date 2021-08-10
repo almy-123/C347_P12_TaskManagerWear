@@ -25,13 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnAdd = findViewById(R.id.btnAdd);
         lv = findViewById(R.id.lv);
-
         arrayList = new ArrayList<Task>();
-        DBHelper dbh = new DBHelper(MainActivity.this);
-        arrayList.addAll(dbh.getTasks());
-        dbh.close();
-        arrayAdapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, arrayList);
-        lv.setAdapter(arrayAdapter);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,5 +34,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        arrayList.clear();
+
+        DBHelper dbh = new DBHelper(MainActivity.this);
+        arrayList.addAll(dbh.getTasks());
+        dbh.close();
+        arrayAdapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, arrayList);
+        lv.setAdapter(arrayAdapter);
     }
 }
