@@ -47,6 +47,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         // watch (Reply)
         Intent intentReply = new Intent(context, MainActivity.class);
+        intentReply.putExtra("taskID", task.getId());
         PendingIntent pi2 = PendingIntent.getActivity(context, requestCode,
                 intentReply, PendingIntent.FLAG_CANCEL_CURRENT);
 

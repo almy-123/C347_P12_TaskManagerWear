@@ -43,7 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertTask(String description, String name){
+    public long insertTask(String description, String name){
 
         // Get an instance of the database for writing
         SQLiteDatabase db = this.getWritableDatabase();
@@ -55,9 +55,21 @@ public class DBHelper extends SQLiteOpenHelper {
         // Store the column name as key and the description as value
         values.put(COLUMN_DESCRIPTION, description);
         // Insert the row into the TABLE_TASK
-        db.insert(TABLE_TASK, null, values);
+        long id = db.insert(TABLE_TASK, null, values);
         // Close the database connection
         db.close();
+
+        // return generated id
+        return id;
+    }
+
+    public int deleteTask(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String condition = COLUMN_ID + "=?";
+        String[] args = {String.valueOf(id)};
+        int result = db.delete(TABLE_TASK, condition, args);
+        db.close();
+        return result;
     }
 
     public ArrayList<Task> getTasks() {
@@ -77,7 +89,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 String description = cursor.getString(2);
                 Task obj = new Task(id, name, description);
                 task.add(obj);
-//                tasks.add(id + " " + name + "\n" + description);
             } while (cursor.moveToNext());
         }
         cursor.close();

@@ -42,27 +42,31 @@ public class AddActivity extends AppCompatActivity {
                 int remind = Integer.parseInt(etRemind.getText().toString());
 
                 DBHelper db = new DBHelper(AddActivity.this);
-                db.insertTask(name, desc);
-                Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_SHORT).show();
-                Log.i("info", "Task: " + name + " Desc: " + desc);
-                etName.setText("");
-                etDesc.setText("");
-                etRemind.setText("");
-                db.close();
+                long id = db.insertTask(name, desc);
 
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, remind);
+                if (id != -1) {
+                    Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                    Log.i("info", "Task: " + name + " Desc: " + desc);
+                    etName.setText("");
+                    etDesc.setText("");
+                    etRemind.setText("");
+                    db.close();
 
-                Intent intent = new Intent(AddActivity.this, MyReceiver.class);
-                Task task = new Task(name, desc);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("task", task);
-                intent.putExtra("bundle", bundle);
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.SECOND, remind);
 
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddActivity.this, reqCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    Intent intent = new Intent(AddActivity.this, MyReceiver.class);
+                    Task task = new Task((int) id, name, desc);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("task", task);
+                    intent.putExtra("bundle", bundle);
 
-                AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
-                am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(AddActivity.this, reqCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
+                    am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                }
+
                 finish();
             }
         });
